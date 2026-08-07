@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Whax.ia — Gravure & créations laser</title>
+  <meta name="description" content="Créations en bois, gravure et découpe laser — pièces uniques et personnalisées par Whax.ia.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="#accueil">Whax<span>.ia</span></a>
+  <nav>
+    <a href="#boutique">Boutique</a>
+    <a href="#personnalisation">Personnalisation</a>
+    <a href="#apropos">À propos</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <button class="cart-btn" id="cartBtn">Panier <b id="cartCount">0</b></button>
+</header>
+
+<main>
+<section class="hero" id="accueil">
+  <div class="hero-content">
+    <p class="eyebrow">GRAVURE • DÉCOUPE • CRÉATION</p>
+    <h1>Des créations qui ont<br><em>leur propre histoire.</em></h1>
+    <p>Pièces fabriquées avec soin, créations originales et personnalisations réalisées au laser.</p>
+    <a class="button" href="#boutique">Découvrir la boutique</a>
+  </div>
+</section>
+
+<section class="intro">
+  <div><span>01</span><h2>Créations disponibles</h2><p>Des pièces déjà réalisées, prêtes à rejoindre leur nouvelle maison.</p></div>
+  <div><span>02</span><h2>Sur mesure</h2><p>Prénom, texte, motif ou idée particulière : créons quelque chose d'unique.</p></div>
+  <div><span>03</span><h2>Expédition</h2><p>Envoi partout en France. Retrait local possible pour les commandes proches.</p></div>
+</section>
+
+<section class="shop" id="boutique">
+  <div class="section-head">
+    <div><p class="eyebrow">LA BOUTIQUE</p><h2>Mes créations</h2></div>
+    <div class="filters">
+      <button class="filter active" data-filter="all">Tout</button>
+      <button class="filter" data-filter="deco">Décoration</button>
+      <button class="filter" data-filter="boite">Boîtes</button>
+      <button class="filter" data-filter="personnalise">Personnalisé</button>
+    </div>
+  </div>
+  <div class="products" id="products"></div>
+</section>
+
+<section class="custom" id="personnalisation">
+  <div>
+    <p class="eyebrow">UNE IDÉE EN TÊTE ?</p>
+    <h2>On peut aussi partir de zéro.</h2>
+    <p>Une boîte, une décoration, un prénom, un logo ou une idée complètement différente. Décris-moi ton projet et je te répondrai avec une proposition.</p>
+    <a class="button light" href="#contact">Parler de mon projet</a>
+  </div>
+</section>
+
+<section class="about" id="apropos">
+  <p class="eyebrow">WHAX.IA</p>
+  <h2>Fabriqué, gravé et imaginé avec passion.</h2>
+  <p>Chaque création est pensée et réalisée avec attention. L'objectif : proposer autre chose qu'un objet fabriqué en série, avec des détails qui font la différence.</p>
+</section>
+
+<section class="contact" id="contact">
+  <p class="eyebrow">CONTACT</p>
+  <h2>Une question ou une commande personnalisée ?</h2>
+  <p>Écris-moi et indique ce que tu aimerais réaliser.</p>
+  <a class="button" href="mailto:contact@whaxia.fr">Me contacter</a>
+</section>
+</main>
+
+<aside class="cart" id="cart">
+  <div class="cart-head"><h2>Votre panier</h2><button id="closeCart">×</button></div>
+  <div id="cartItems" class="cart-items"></div>
+  <div class="cart-foot">
+    <div class="total"><span>Total</span><strong id="cartTotal">0,00 €</strong></div>
+    <button class="button full" id="checkout">Passer commande</button>
+    <small>Paiement sécurisé par carte bancaire (Stripe).</small>
+  </div>
+</aside>
+<div class="overlay" id="overlay"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
