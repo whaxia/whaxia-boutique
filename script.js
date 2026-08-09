@@ -38,7 +38,27 @@ const CATEGORY_LABELS = {
   objets: "Objets",
   nature: "Nature",
   detourne: "Détourné",
+  gourmandise: "Gourmandise",
+  feerique: "Féerique",
 };
+
+const CATEGORY_COLORS = {
+  all: "#c99b62",
+  animaux: "#7a9d6f",
+  personnages: "#8b7bc9",
+  portraits: "#c9a15a",
+  objets: "#5a9db0",
+  nature: "#7fae7a",
+  detourne: "#c96f8b",
+  gourmandise: "#c98a5a",
+  feerique: "#a583c9",
+};
+
+function applyCategoryTheme(cat) {
+  const color = CATEGORY_COLORS[cat] || CATEGORY_COLORS.all;
+  document.documentElement.style.setProperty("--accent", color);
+  document.body.setAttribute("data-theme", cat);
+}
 
 function renderCategoryFilters() {
   const container = document.querySelector(".filters");
@@ -53,12 +73,14 @@ function renderCategoryFilters() {
     }));
 
   container.innerHTML = buttons.join("");
+  applyCategoryTheme("all");
 
   container.querySelectorAll(".filter").forEach(b => {
     b.onclick = () => {
       container.querySelectorAll(".filter").forEach(x => x.classList.remove("active"));
       b.classList.add("active");
       renderProducts(b.dataset.filter);
+      applyCategoryTheme(b.dataset.filter);
     };
   });
 }
