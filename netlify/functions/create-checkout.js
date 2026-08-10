@@ -67,6 +67,7 @@ exports.handler = async (event) => {
       success_url: `${origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/index.html#boutique`,
       shipping_address_collection: { allowed_countries: ["FR"] },
+      phone_number_collection: { enabled: true },
       metadata: {
         items: JSON.stringify(items.map((i) => ({ id: i.id, qty: i.qty }))),
       },
