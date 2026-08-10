@@ -35,12 +35,20 @@ exports.handler = async (event) => {
 
     try {
       const items = JSON.parse(session.metadata?.items || "[]");
+      const shipping = session.customer_details?.address || session.shipping_details?.address || {};
+      const nomClient = session.customer_details?.name || session.shipping_details?.name || null;
 
-      // Enregistre la commande (ignore si déjà enregistrée, ex: retry Stripe)
+      // Enregistre la commande avec les infos de livraison (ignore si déjà enregistrée, ex: retry Stripe)
       await supabaseAdmin.from("commandes_boutique").upsert(
         {
           stripe_session_id: session.id,
           email_client: session.customer_details?.email || null,
+          nom_client: nomClient,
+          telephone: session.customer_details?.phone || null,
+          adresse: [shipping.line1, shipping.line2].filter(Boolean).join(", ") || null,
+          ville: shipping.city || null,
+          code_postal: shipping.postal_code || null,
+          pays: shipping.country || null,
           items,
           total: (session.amount_total || 0) / 100,
           statut: "payee",
@@ -48,24 +56,13 @@ exports.handler = async (event) => {
         { onConflict: "stripe_session_id" }
       );
 
-      // Décrémente le stock des pièces uniques
+      // Décrémente le stock des pièces uniques de façon atomique (évite la double-vente
+      // si deux paiements arrivent quasi simultanément sur la dernière pièce)
       for (const item of items) {
-        const { data: produit } = await supabaseAdmin
-          .from("produits_boutique")
-          .select("id, type, stock")
-          .eq("id", item.id)
-          .single();
-
-        if (produit && produit.type === "unique" && produit.stock !== null) {
-          const nouveauStock = Math.max(0, produit.stock - item.qty);
-          await supabaseAdmin
-            .from("produits_boutique")
-            .update({
-              stock: nouveauStock,
-              disponible: nouveauStock > 0,
-            })
-            .eq("id", item.id);
-        }
+        await supabaseAdmin.rpc("decrement_stock_atomic", {
+          p_id: item.id,
+          p_qty: item.qty,
+        });
       }
     } catch (err) {
       console.error("Erreur traitement commande:", err);
