@@ -44,14 +44,14 @@ const CATEGORY_LABELS = {
 
 const CATEGORY_COLORS = {
   all: "#c99b62",
-  animaux: "#7a9d6f",
+  animaux: "#a8613c",
   personnages: "#8b7bc9",
   portraits: "#c9a15a",
   objets: "#5a9db0",
-  nature: "#7fae7a",
-  detourne: "#c96f8b",
-  gourmandise: "#c98a5a",
-  feerique: "#a583c9",
+  nature: "#5a9d6f",
+  detourne: "#c9508f",
+  gourmandise: "#d98a3d",
+  feerique: "#7b8fd9",
 };
 
 function applyCategoryTheme(cat) {
@@ -96,7 +96,7 @@ function renderProducts(filter = "all") {
 
   grid.innerHTML = list.map(p => {
     const img = p.photo_url
-      ? `<img src="${p.photo_url}" alt="${p.nom}" loading="lazy">`
+      ? `<img src="${p.photo_url}" alt="${p.nom}" loading="lazy" oncontextmenu="return false" onclick="openLightbox('${p.photo_url}','${p.nom.replace(/'/g, "\\'")}')">`
       : `PHOTO DE LA CRÉATION`;
     const stockInfo = p.type === "unique"
       ? `<small class="stock-info">Pièce unique</small>`
@@ -105,7 +105,7 @@ function renderProducts(filter = "all") {
 
     return `
     <article class="product">
-      <div class="product-img">${img}</div>
+      <div class="product-img">${img}${p.photo_url ? '<span class="watermark">Whax.ia</span>' : ''}</div>
       <div class="product-info">
         <h3>${p.nom}</h3>
         <p>${p.description || ""}</p>
@@ -117,6 +117,17 @@ function renderProducts(filter = "all") {
       </div>
     </article>`;
   }).join("");
+}
+
+// --- Lightbox (zoom photo au clic) ---
+function openLightbox(url, nom) {
+  const box = document.querySelector("#lightbox");
+  box.querySelector("img").src = url;
+  box.querySelector("img").alt = nom;
+  box.classList.add("show");
+}
+function closeLightbox() {
+  document.querySelector("#lightbox").classList.remove("show");
 }
 
 // --- Panier ---
@@ -213,6 +224,8 @@ document.querySelector("#cartBtn").onclick = openCart;
 document.querySelector("#closeCart").onclick = closeCart;
 document.querySelector("#overlay").onclick = closeCart;
 document.querySelector("#checkout").onclick = checkout;
+document.querySelector("#closeLightbox").onclick = closeLightbox;
+document.querySelector("#lightbox").onclick = (e) => { if (e.target.id === "lightbox") closeLightbox(); };
 
 loadProducts();
 renderCart();
