@@ -26,3 +26,4 @@ body{transition:background .6s ease}
 .lightbox.show{display:flex}
 .lightbox img{max-width:90vw;max-height:85vh;object-fit:contain;border:1px solid var(--line)}
 .lightbox-close{position:absolute;top:20px;right:30px;background:none;border:0;color:#fff;font-size:40px;cursor:pointer;line-height:1}
+.secure-badge{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;padding:10px;border-radius:6px;background:rgba(90,157,176,.12);border:1px solid rgba(90,157,176,.3);color:#8fc4d4;font-size:13px;font-weight:600}
