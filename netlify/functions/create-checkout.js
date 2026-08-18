@@ -31,7 +31,6 @@ exports.handler = async (event) => {
 
     if (error) throw error;
 
-    // On vérifie que chaque article demandé existe bien et a du stock si c'est une pièce unique
     const line_items = [];
     for (const item of items) {
       const p = produits.find((x) => x.id === item.id);
@@ -69,7 +68,12 @@ exports.handler = async (event) => {
       shipping_address_collection: { allowed_countries: ["FR"] },
       phone_number_collection: { enabled: true },
       metadata: {
-        items: JSON.stringify(items.map((i) => ({ id: i.id, qty: i.qty }))),
+        items: JSON.stringify(
+          items.map((i) => {
+            const p = produits.find((x) => x.id === i.id);
+            return { id: i.id, nom: p ? p.nom : i.id, qty: i.qty };
+          })
+        ),
       },
     });
 
